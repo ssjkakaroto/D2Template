@@ -22,10 +22,16 @@
 *                                                                           *
 *****************************************************************************/
 
+#pragma once
+
+#ifndef _DLLMAIN_H
+#define _DLLMAIN_H
+
 #define WIN32_LEAN_AND_MEAN
 #ifndef _CRT_SECURE_NO_DEPRECATE
 #define _CRT_SECURE_NO_DEPRECATE
 #endif
+#undef _WIN32_WINNT
 #define _WIN32_WINNT 0x600
 
 #include <windows.h>
@@ -133,3 +139,5 @@ static DLLBaseStrc gptDllFiles [] =
 void __fastcall D2TEMPLATE_FatalError(char* szMessage);
 DWORD __fastcall GetDllOffset(char* ModuleName, DWORD BaseAddress, int Offset);
 char* __fastcall GetModuleExt(char* ModuleName);
+
+#endif // _DLLMAIN_H
