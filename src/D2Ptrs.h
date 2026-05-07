@@ -55,6 +55,7 @@ extern DWORD __fastcall GetDllOffset(char* ModuleName, DWORD BaseAddress, int Of
 *                                                                               *
 *********************************************************************************/
 D2PTR(D2GAME, GAME_UpdatePlayer_Return, 0x79B95);
+D2PTR(D2GAME, pfnPickGoldPile_113c, 0xD6C80);
 
 /********************************************************************************
 *                                                                               *
