@@ -56,7 +56,6 @@ extern DWORD __fastcall GetDllOffset(char* ModuleName, DWORD BaseAddress, int Of
 *********************************************************************************/
 
 
-
 /********************************************************************************
 *                                                                               *
 *   D2CLIENT.DLL POINTERS                                                       *
@@ -70,7 +69,13 @@ extern DWORD __fastcall GetDllOffset(char* ModuleName, DWORD BaseAddress, int Of
 *   D2COMMON.DLL POINTERS                                                       *
 *                                                                               *
 *********************************************************************************/
-
+// 1.13c D2Common Ordinals / Offsets
+D2FUNC(D2COMMON, GetRoomFromUnit, D2RoomStrc*, __stdcall, (D2UnitStrc* pUnit), 0x2FE10);
+D2FUNC(D2COMMON, GetUnitState, BOOL, __stdcall, (D2UnitStrc* pUnit, DWORD dwStateNo), 0x33CD0);
+D2FUNC(D2COMMON, GetItemRecord, D2ItemsTXT*, __stdcall, (DWORD dwClass), 0x719A0);
+D2FUNC(D2COMMON, GetUnitCoords, void, __stdcall, (D2UnitStrc* pUnit, D2CoordStrc* pCoords), 0x30050);
+D2FUNC(D2COMMON, GetUnitStat, DWORD, __stdcall, (D2UnitStrc* pUnit, DWORD dwStat, DWORD dwStat2), 0x38B70);
+D2FUNC(D2COMMON, GetInventoryGoldLimit, DWORD, __stdcall, (D2UnitStrc* pUnit), 0x31940);
 
 
 // end of file -----------------------------------------------------------------

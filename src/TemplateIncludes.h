@@ -30,6 +30,6 @@
 //#include "MyOwnSourceHeader1.h"
 //#include "MyOwnSourceHeader2.h"
 //#include "MyOwnSourceHeader3.h"
-
+#include "GoldPickup.h"
 // end of file --------------------------------------------------------------
 #endif

@@ -23,7 +23,9 @@
 *****************************************************************************/
 
 #define WIN32_LEAN_AND_MEAN
+#ifndef _CRT_SECURE_NO_DEPRECATE
 #define _CRT_SECURE_NO_DEPRECATE
+#endif
 #define _WIN32_WINNT 0x600
 
 #include <windows.h>

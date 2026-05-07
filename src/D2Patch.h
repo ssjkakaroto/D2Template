@@ -39,6 +39,11 @@ static const DLLPatchStrc gptTemplatePatches[] =
         Keep it organized to save yourself some headache
     */
     
+    // Write 0xE9 (JMP) at the start of GAME_UpdatePlayer
+    {D2DLL_D2GAME, 0x79B90, PATCH_JMP, FALSE, 1}, 
+    // Write the relative address of our hook immediately after
+    {D2DLL_D2GAME, 0x79B91, (DWORD)GAME_UpdatePlayer_Hook, TRUE, 0}, 
+    
     {D2DLL_INVALID} // this must be the last entry in the array!
 };
 
