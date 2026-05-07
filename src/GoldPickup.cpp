@@ -90,25 +90,14 @@ void __fastcall GOLDPICKUP_PickupInRangeGold(D2GameStrc* pGame, D2UnitStrc* pPla
  * @brief Naked hook executed at the beginning of GAME_UpdatePlayer (D2Game+0x79B90)
  */
 void __declspec(naked) GAME_UpdatePlayer_Hook() {
-    static char szD2Game[] = "D2Game.dll";
-    static DWORD dwRetAddr = 0;
-
     __asm {
         pushad
         
-        cmp dword ptr [dwRetAddr], 0
-        jne execute_logic
-        
-        mov ecx, offset szD2Game
-        mov edx, DLLBASE_D2GAME
-        push 0x79B95
-        call GetDllOffset
-        mov dword ptr [dwRetAddr], eax
-
-    execute_logic:
+        // Grab the arguments from the stack (offsets remain the same because pushad is 32 bytes)
         mov ecx, dword ptr [esp + 24] // Original ECX = pGame
         mov edx, dword ptr [esp + 20] // Original EDX = pPlayer
 
+        // Execute our custom logic
         call GOLDPICKUP_PickupInRangeGold
         
         popad 
@@ -118,6 +107,7 @@ void __declspec(naked) GAME_UpdatePlayer_Hook() {
         push ebx
         push ebp
 
-        jmp dword ptr [dwRetAddr]
+        // Jump directly using the resolved D2PTR!
+        jmp dword ptr [D2GAME_GAME_UpdatePlayer_Return]
     }
 }
