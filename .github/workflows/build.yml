@@ -1,0 +1,29 @@
+name: Build GoldPickup DLL (MSVC)
+
+on:
+  push:
+    branches: [ "auto_gold_pickup" ]
+  pull_request:
+    branches: [ "auto_gold_pickup" ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Configure CMake (32-bit MSVC)
+      # The -A Win32 flag is critical! It forces the x86 toolchain.
+      run: cmake -B build -A Win32
+
+    - name: Build Project
+      run: cmake --build build --config Release
+
+    - name: Upload DLL Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: GoldPickup_113c
+        path: build/Release/GoldPickup.dll
+        if-no-files-found: error
