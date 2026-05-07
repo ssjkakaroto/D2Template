@@ -107,6 +107,6 @@ void __declspec(naked) GAME_UpdatePlayer_Hook() {
         push ebp
 
         // Jump directly using the resolved D2PTR!
-        jmp dword ptr [D2GAME_GAME_UpdatePlayer_Return]
+        jmp dword ptr [GAME_UpdatePlayer_Return]
     }
 }
