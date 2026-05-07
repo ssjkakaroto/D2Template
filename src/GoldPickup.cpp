@@ -17,8 +17,7 @@ static inline DWORD D2COMMON_GetDistance(int x1, int y1, int x2, int y2) {
  * @note Original offset 0xD6C80 expects ESI = pPlayer, Stack1 = pGame, Stack2 = pItem
  */
 void D2GAME_PickGoldPile_113c(D2GameStrc* pGame, D2UnitStrc* pPlayer, D2UnitStrc* pItem) {
-    DWORD pfnPickGoldPile = GetDllOffset((char*)"D2Game.dll", DLLBASE_D2GAME, 0xD6C80);
-
+   
     __asm {
         push esi                 
         
@@ -26,7 +25,7 @@ void D2GAME_PickGoldPile_113c(D2GameStrc* pGame, D2UnitStrc* pPlayer, D2UnitStrc
         push pItem               // Stack Arg 2
         push pGame               // Stack Arg 1
         
-        mov eax, pfnPickGoldPile 
+        mov eax, pfnPickGoldPile_113c 
         call eax                 // Callee cleans up 8 bytes via RETN 8
         
         pop esi                  
