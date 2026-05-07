@@ -54,7 +54,7 @@ extern DWORD __fastcall GetDllOffset(char* ModuleName, DWORD BaseAddress, int Of
 *   D2GAME.DLL POINTERS                                                         *
 *                                                                               *
 *********************************************************************************/
-
+D2PTR(D2GAME, GAME_UpdatePlayer_Return, 0x79B95);
 
 /********************************************************************************
 *                                                                               *
