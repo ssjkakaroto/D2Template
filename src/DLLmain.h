@@ -1,3 +1,8 @@
+#pragma once
+
+#ifndef _DLLMAIN_H
+#define _DLLMAIN_H
+
 /****************************************************************************
 *                                                                           *
 *   DLLmain.h                                                               *
@@ -23,7 +28,10 @@
 *****************************************************************************/
 
 #define WIN32_LEAN_AND_MEAN
+#ifndef _CRT_SECURE_NO_DEPRECATE
 #define _CRT_SECURE_NO_DEPRECATE
+#endif
+#undef _WIN32_WINNT
 #define _WIN32_WINNT 0x600
 
 #include <windows.h>
@@ -73,6 +81,17 @@ struct DLLPatchStrc
     DWORD dwData;
     BOOL bRelative;
     size_t nPatchSize;
+};
+
+/* Companion struct — mirrors DLLPatchStrc but carries a raw byte array
+ * instead of a single DWORD value.
+ * Terminate patch tables with { D2DLL_INVALID, 0, nullptr, 0 }. */
+struct DLLBytesPatchStrc
+{
+    int         nDLL;       /* target DLL index, D2DLL_INVALID = end sentinel */
+    DWORD       dwAddress;  /* offset within DLL                               */
+    const BYTE *pData;      /* pointer to byte array to write                  */
+    size_t      nSize;      /* number of bytes to write                        */
 };
 
 enum D2TEMPLATE_DLL_FILES
@@ -129,5 +148,9 @@ static DLLBaseStrc gptDllFiles [] =
 };
 
 void __fastcall D2TEMPLATE_FatalError(char* szMessage);
+BOOL __fastcall D2TEMPLATE_ApplyPatch(void* hGame, const DLLPatchStrc* hPatch);
+BOOL __fastcall D2TEMPLATE_PatchBytes(void* hGame, const DLLBytesPatchStrc* hPatch);
 DWORD __fastcall GetDllOffset(char* ModuleName, DWORD BaseAddress, int Offset);
 char* __fastcall GetModuleExt(char* ModuleName);
+
+#endif // _DLLMAIN_H

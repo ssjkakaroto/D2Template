@@ -1,6 +1,7 @@
 #define _D2VARS_H
 
 #include "DLLmain.h"
+#include <windows.h>
 #include "D2Patch.h"
 
 /****************************************************************************
@@ -57,6 +58,8 @@ BOOL __fastcall D2TEMPLATE_ApplyPatch(void* hGame, const DLLPatchStrc* hPatch)
 
         if (hPatch->nPatchSize > 0)
         {
+            if (hPatch->nPatchSize > 1024) return FALSE;
+
             BYTE Buffer[1024];
 
             for (size_t i = 0; i < hPatch->nPatchSize; i++)
@@ -79,6 +82,38 @@ BOOL __fastcall D2TEMPLATE_ApplyPatch(void* hGame, const DLLPatchStrc* hPatch)
         hPatch++;
     }
     
+    return TRUE;
+}
+
+BOOL __fastcall D2TEMPLATE_PatchBytes(void* hGame, const DLLBytesPatchStrc* hPatch)
+{
+    while (hPatch->nDLL != D2DLL_INVALID)
+    {
+        int nDLL = hPatch->nDLL;
+        if (nDLL < 0 || nDLL >= D2DLL_INVALID) return FALSE;
+
+        DWORD dwAddress = hPatch->dwAddress;
+        if (!dwAddress) return FALSE;
+
+        DWORD dwBaseAddress = gptDllFiles[nDLL].dwAddress;
+        if (!dwBaseAddress) return FALSE;
+
+        dwAddress += dwBaseAddress;
+
+        if (!hPatch->pData || hPatch->nSize == 0) return FALSE;
+
+        void* hAddress = (void*)dwAddress;
+        DWORD dwOldPage;
+
+        VirtualProtect(hAddress, hPatch->nSize, PAGE_EXECUTE_READWRITE, &dwOldPage);
+        int nReturn = WriteProcessMemory(hGame, hAddress, hPatch->pData, hPatch->nSize, 0);
+        VirtualProtect(hAddress, hPatch->nSize, dwOldPage, 0);
+
+        if (nReturn == 0) return FALSE;
+
+        hPatch++;
+    }
+
     return TRUE;
 }
 
@@ -183,7 +218,7 @@ DWORD __fastcall GetDllOffset(char* ModuleName, DWORD BaseAddress, int Offset)
 char* __fastcall GetModuleExt(char* ModuleName)
 {
 	char DLLExt[] = ".dll";
-	char DLLName[32] = {0};
+	static char DLLName[32] = {0};
 	strcpy(DLLName,ModuleName);
 	return strcat(DLLName,DLLExt);
 }
